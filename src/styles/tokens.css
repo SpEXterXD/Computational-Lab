@@ -1,0 +1,90 @@
+/*
+ * Computational Lab design tokens. Canonical source of truth (DESIGN.md §3, §4, §6, §7).
+ * Color and data-viz values flip via [data-theme] (dark is the default); structure,
+ * spacing, radius, and motion tokens are shared by both themes.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Dark theme (observatory) */
+  --bg-primary: #0b0b0d;
+  --bg-secondary: #121214;
+  --bg-tertiary: #1a1a1e;
+  --border-subtle: #26262b;
+  --border-strong: #3a3a41;
+  --text-primary: #f2f2f0;
+  --text-secondary: #a3a3ab;
+  --text-tertiary: #82828c;
+  --accent: #e8622c;
+  --accent-strong: #ff7a45;
+  --accent-contrast: #0b0b0d;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --elevation-overlay: 0 16px 48px rgba(0, 0, 0, 0.5);
+
+  /* Data palette (canvases only, never the UI) */
+  --viz-1: #e8622c;
+  --viz-2: #56b4e9;
+  --viz-3: #009e73;
+  --viz-4: #f0e442;
+  --viz-5: #cc79a7;
+  --viz-6: #0072b2;
+
+  /* Typography stacks (families injected by next/font on <html>) */
+  --font-display-stack: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  --font-sans-stack: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono-stack: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
+
+  /* Spacing scale (8px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+  --space-9: 128px;
+
+  /* Radius lock */
+  --radius-1: 4px;
+  --radius-2: 6px;
+  --radius-3: 10px;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 420ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Structure */
+  --page-max: 1280px;
+  --nav-h: 64px;
+  --nav-h-compact: 52px;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Light theme (lab notebook) */
+  --bg-primary: #faf9f7;
+  --bg-secondary: #f2f0ec;
+  --bg-tertiary: #e9e6e0;
+  --border-subtle: #d8d4cc;
+  --border-strong: #b9b4aa;
+  --text-primary: #1c1b19;
+  --text-secondary: #57544e;
+  --text-tertiary: #6e6a62;
+  --accent: #c2410c;
+  --accent-strong: #a33409;
+  --accent-contrast: #ffffff;
+  --overlay: rgba(28, 27, 25, 0.4);
+  --elevation-overlay: 0 16px 48px rgba(28, 27, 25, 0.12);
+
+  /* Data palette darkened for stroke contrast on paper */
+  --viz-1: #c2410c;
+  --viz-2: #1f7fb0;
+  --viz-3: #007a55;
+  --viz-4: #b58900;
+  --viz-5: #a5517e;
+  --viz-6: #005a8f;
+}
