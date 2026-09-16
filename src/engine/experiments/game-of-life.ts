@@ -19,6 +19,7 @@ export class GameOfLifeExperiment extends BaseExperiment {
   private births = 0;
   private deaths = 0;
   private paintValue = 1;
+  private pointerDown = false;
 
   protected params(): ParameterDef[] {
     return [
@@ -127,15 +128,21 @@ export class GameOfLifeExperiment extends BaseExperiment {
 
   onPointer(state: PointerState): void {
     if (!state.inside || this.cells.length === 0) return;
+    if (!state.down) {
+      this.pointerDown = false;
+      return;
+    }
     const cell = this.num("cell");
     const x = Math.floor((state.x - this.offsetX) / cell);
     const y = Math.floor((state.y - this.offsetY) / cell);
     if (x < 0 || y < 0 || x >= this.cols || y >= this.rows) return;
-    if (state.down) {
-      this.paintValue = this.cells[y * this.cols + x] === 1 ? 0 : 1;
+    const idx = y * this.cols + x;
+    if (!this.pointerDown) {
+      this.pointerDown = true;
+      this.paintValue = this.cells[idx] === 1 ? 0 : 1;
     }
-    if (this.cells[y * this.cols + x] !== this.paintValue) {
-      this.cells[y * this.cols + x] = this.paintValue;
+    if (this.cells[idx] !== this.paintValue) {
+      this.cells[idx] = this.paintValue;
       this.population += this.paintValue === 1 ? 1 : -1;
     }
   }

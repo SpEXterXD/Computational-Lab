@@ -120,7 +120,7 @@ export class KeplerOrbitsExperiment extends BaseExperiment {
     for (let deg = 0; deg <= 360; deg += 1) {
       const th = (deg * Math.PI) / 180;
       const rr = (this.a * (1 - this.ecc * this.ecc)) / (1 + this.ecc * Math.cos(th));
-      const px = focus.x + rr * Math.cos(th) - this.a * this.ecc;
+      const px = focus.x + rr * Math.cos(th);
       const py = focus.y - rr * Math.sin(th);
       if (deg === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
@@ -132,11 +132,11 @@ export class KeplerOrbitsExperiment extends BaseExperiment {
     ctx.arc(focus.x, focus.y, 6, 0, Math.PI * 2);
     ctx.fill();
     // Planet + radius vector + wedges
-    const px = focus.x + this.x - this.a * this.ecc;
+    const px = focus.x + this.x;
     const py = focus.y - this.y;
     if (this.sweptAreas.length > 1) {
       ctx.fillStyle = theme.accent;
-      let startAngle = Math.atan2(-this.y, this.x - this.a * this.ecc);
+      let startAngle = Math.atan2(-this.y, this.x);
       for (let i = this.sweptAreas.length - 1; i >= 0; i--) {
         const area = this.sweptAreas[i];
         const r = Math.max(4, this.rNow);

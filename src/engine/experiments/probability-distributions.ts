@@ -70,12 +70,10 @@ export class ProbabilityDistributionsExperiment extends BaseExperiment {
     }
     const mu = a;
     const sigma = Math.max(0.05, b);
-    const binWidth = this.domain() / BINS;
-    const center = mu + ((k + 0.5) / BINS - 0.5) * this.domain();
+    const x = k;
     return (
-      Math.exp(-((center - mu) ** 2) / (2 * sigma * sigma)) /
-      (sigma * Math.sqrt(2 * Math.PI)) *
-      binWidth
+      Math.exp(-((x - mu) ** 2) / (2 * sigma * sigma)) /
+      (sigma * Math.sqrt(2 * Math.PI))
     );
   }
 

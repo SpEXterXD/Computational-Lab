@@ -150,7 +150,6 @@ export class BfsDfsExperiment extends BaseExperiment {
     }
     ctx.fillStyle = theme.viz[1];
     for (const node of this.queue.slice(0, 4000)) {
-      if (this.visited[node]) continue;
       ctx.fillRect(offsetX + (node % cols) * cell + 1, offsetY + Math.floor(node / cols) * cell + 1, cell - 2, cell - 2);
     }
     if (this.current >= 0 && this.status === "running") {

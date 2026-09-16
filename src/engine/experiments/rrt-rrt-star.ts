@@ -107,11 +107,14 @@ export class RrtExperiment extends BaseExperiment {
   }
 
   protected onUpdate(): void {
-    if (this.status !== "growing" || this.nodeCount >= this.xs.length - 8) return;
-    const stepSize = this.num("step");
+    if (this.nodeCount >= this.xs.length - 8) return;
     const mode = this.str("mode");
+    if (mode === "rrt" && this.status === "reached") return;
+    const stepSize = this.num("step");
     const samples = this.num("samples");
-    for (let s = 0; s < samples && this.status === "growing"; s++) {
+    for (let s = 0; s < samples; s++) {
+      if (mode === "rrt" && this.status === "reached") break;
+      if (this.nodeCount >= this.xs.length - 8) break;
       this.samplesUsed += 1;
       // Goal bias: 8% of samples aim straight at the goal.
       const tx = this.rng() < 0.08 ? this.goal.x * this.width : this.rng() * this.width;
@@ -164,12 +167,15 @@ export class RrtExperiment extends BaseExperiment {
       const distToGoal = Math.hypot(nx - this.goal.x * this.width, ny - this.goal.y * this.height);
       if (distToGoal < this.goalRadius) {
         this.status = "reached";
-        this.bestCost = this.costs[i] + distToGoal;
-        let node = i;
-        this.goalPath = [i];
-        while (node !== 0) {
-          node = this.parents[node];
-          this.goalPath.push(node);
+        const candidateCost = this.costs[i] + distToGoal;
+        if (candidateCost < this.bestCost) {
+          this.bestCost = candidateCost;
+          let node = i;
+          this.goalPath = [i];
+          while (node !== 0) {
+            node = this.parents[node];
+            this.goalPath.push(node);
+          }
         }
       }
     }

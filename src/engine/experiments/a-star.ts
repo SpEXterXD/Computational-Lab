@@ -31,6 +31,7 @@ export class AStarExperiment extends BaseExperiment {
   private path: number[] = [];
   private current = -1;
   private paintWall: 0 | 1 = 1;
+  private pointerDown = false;
 
   protected params(): ParameterDef[] {
     return [
@@ -311,13 +312,18 @@ export class AStarExperiment extends BaseExperiment {
 
   onPointer(state: PointerState): void {
     if (!state.inside || this.walls.length === 0) return;
+    if (!state.down) {
+      this.pointerDown = false;
+      return;
+    }
     const cell = this.num("cell");
     const x = Math.floor((state.x - this.offsetX) / cell);
     const y = Math.floor((state.y - this.offsetY) / cell);
     if (x < 0 || y < 0 || x >= this.cols || y >= this.rows) return;
     const node = y * this.cols + x;
     if (node === this.start || node === this.goal) return;
-    if (state.down) {
+    if (!this.pointerDown) {
+      this.pointerDown = true;
       this.paintWall = this.walls[node] === 0 ? 1 : 0;
     }
     if (this.walls[node] !== this.paintWall) {

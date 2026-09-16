@@ -14,15 +14,15 @@ const FUNCTIONS: Record<string, Fn> = {
   parabola: {
     label: "x^2",
     f: (x) => x * x,
-    exact: "2/3",
+    exact: "1/3",
     exactValue: (a, b) => (b ** 3 - a ** 3) / 3,
     domain: [0, 1],
   },
   gaussian: {
     label: "exp(-x^2)",
     f: (x) => Math.exp(-x * x),
-    exact: "sqrt(pi) erf(1)",
-    exactValue: () => 1.4936482649814836,
+    exact: "sqrt(pi)/2 erf(1)",
+    exactValue: () => 0.746824132812427,
     domain: [0, 1],
   },
 };

@@ -76,20 +76,21 @@ export class MarchingSquaresExperiment extends BaseExperiment {
           this.segmentList.push(x1, y1, x2, y2);
           this.segments += 1;
         };
+        const leftX = gx * cw;
         switch (code) {
-          case 1: seg(0, leftY, bottomX, (gy + 1) * ch); break;
+          case 1: seg(leftX, leftY, bottomX, (gy + 1) * ch); break;
           case 2: seg(bottomX, (gy + 1) * ch, (gx + 1) * cw, rightY); break;
-          case 3: seg(0, leftY, (gx + 1) * cw, rightY); break;
+          case 3: seg(leftX, leftY, (gx + 1) * cw, rightY); break;
           case 4: seg(topX, gy * ch, (gx + 1) * cw, rightY); break;
           case 5: {
             const centerHigh = (f00 + f10 + f01 + f11) / 4 > this.threshold;
             if (centerHigh) {
-              seg(0, leftY, midX, midY);
+              seg(leftX, leftY, midX, midY);
               seg(midX, midY, topX, gy * ch);
               seg((gx + 1) * cw, rightY, midX, midY);
               seg(midX, midY, bottomX, (gy + 1) * ch);
             } else {
-              seg(0, leftY, midX, midY);
+              seg(leftX, leftY, midX, midY);
               seg(midX, midY, bottomX, (gy + 1) * ch);
               seg((gx + 1) * cw, rightY, midX, midY);
               seg(midX, midY, topX, gy * ch);
@@ -97,8 +98,8 @@ export class MarchingSquaresExperiment extends BaseExperiment {
             break;
           }
           case 6: seg(topX, gy * ch, bottomX, (gy + 1) * ch); break;
-          case 7: seg(0, leftY, topX, gy * ch); break;
-          case 8: seg(0, leftY, topX, gy * ch); break;
+          case 7: seg(leftX, leftY, topX, gy * ch); break;
+          case 8: seg(leftX, leftY, topX, gy * ch); break;
           case 9: seg(topX, gy * ch, bottomX, (gy + 1) * ch); break;
           case 10: {
             const centerHigh = (f00 + f10 + f01 + f11) / 4 > this.threshold;
@@ -106,19 +107,19 @@ export class MarchingSquaresExperiment extends BaseExperiment {
               seg(topX, gy * ch, midX, midY);
               seg(midX, midY, (gx + 1) * cw, rightY);
               seg(bottomX, (gy + 1) * ch, midX, midY);
-              seg(midX, midY, 0, leftY);
+              seg(midX, midY, leftX, leftY);
             } else {
               seg(topX, gy * ch, midX, midY);
-              seg(midX, midY, 0, leftY);
+              seg(midX, midY, leftX, leftY);
               seg(bottomX, (gy + 1) * ch, midX, midY);
               seg(midX, midY, (gx + 1) * cw, rightY);
             }
             break;
           }
           case 11: seg(topX, gy * ch, (gx + 1) * cw, rightY); break;
-          case 12: seg(0, leftY, (gx + 1) * cw, rightY); break;
+          case 12: seg(leftX, leftY, (gx + 1) * cw, rightY); break;
           case 13: seg(bottomX, (gy + 1) * ch, (gx + 1) * cw, rightY); break;
-          case 14: seg(0, leftY, bottomX, (gy + 1) * ch); break;
+          case 14: seg(leftX, leftY, bottomX, (gy + 1) * ch); break;
         }
       }
     }

@@ -71,7 +71,7 @@ export class MonteCarloExperiment extends BaseExperiment {
     ctx.strokeStyle = theme.accent;
     ctx.lineWidth = 1.6;
     ctx.beginPath();
-    ctx.arc(ox, oy + size, size, Math.PI, Math.PI * 1.5);
+    ctx.arc(ox, oy + size, size, 1.5 * Math.PI, 2 * Math.PI);
     ctx.stroke();
     ctx.strokeStyle = theme.line;
     ctx.strokeRect(ox, oy, size, size);

@@ -50,6 +50,7 @@ export class ElectrostaticPotentialExperiment extends BaseExperiment {
         label: "Grid",
         options: [
           { value: "64", label: "64 × 64" },
+          { value: "80", label: "80 × 80" },
           { value: "96", label: "96 × 96" },
         ],
         defaultValue: "80",

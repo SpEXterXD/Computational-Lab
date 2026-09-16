@@ -137,20 +137,19 @@ export class BarnesHutExperiment extends BaseExperiment {
 
   private newNode(x: number, y: number, size: number): number {
     if (this.nodeCount >= this.nodeMass.length) {
-      const grow = <T extends Float64Array | Int32Array>(arr: T): T => {
-        const next = new (arr.constructor as { new(length: number): T })(arr.length * 2);
+      const grow = <T extends Float64Array | Int32Array>(arr: T, minLen: number): T => {
+        const next = new (arr.constructor as { new(length: number): T })(Math.max(minLen, arr.length * 2));
         next.set(arr);
         return next;
       };
-      this.nodeChild = grow(this.nodeChild).fill(-1, this.nodeCount * 4);
-      this.nodeMass = grow(this.nodeMass);
-      this.nodeComX = grow(this.nodeComX);
-      this.nodeComY = grow(this.nodeComY);
-      this.nodeX = grow(this.nodeX);
-      this.nodeY = grow(this.nodeY);
-      this.nodeSize = grow(this.nodeSize);
-      this.nodeBody = grow(this.nodeBody);
-      this.nodeChild.fill(-1, 0, this.nodeCount * 4);
+      this.nodeChild = grow(this.nodeChild, 64).fill(-1, this.nodeCount * 4);
+      this.nodeMass = grow(this.nodeMass, 16);
+      this.nodeComX = grow(this.nodeComX, 16);
+      this.nodeComY = grow(this.nodeComY, 16);
+      this.nodeX = grow(this.nodeX, 16);
+      this.nodeY = grow(this.nodeY, 16);
+      this.nodeSize = grow(this.nodeSize, 16);
+      this.nodeBody = grow(this.nodeBody, 16);
     }
     const id = this.nodeCount++;
     this.nodeChild[id * 4] = -1;

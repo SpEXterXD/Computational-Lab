@@ -77,6 +77,7 @@ export class SimulatedAnnealingExperiment extends BaseExperiment {
 
   private deltaFor(i: number, k: number): number {
     // Reversal of tour[i..k]: only the two boundary edges change.
+    if (i === k || (i === 0 && k === CITIES - 1)) return 0;
     const prev = this.tour[(i - 1 + CITIES) % CITIES];
     const start = this.tour[i];
     const end = this.tour[k];
@@ -92,7 +93,7 @@ export class SimulatedAnnealingExperiment extends BaseExperiment {
       let i = Math.floor(this.rng() * CITIES);
       let k = Math.floor(this.rng() * CITIES);
       if (i > k) [i, k] = [k, i];
-      if (i === k) continue;
+      if (i === k || (i === 0 && k === CITIES - 1)) continue;
       const delta = this.deltaFor(i, k);
       // Metropolis criterion.
       if (delta < 0 || this.rng() < Math.exp(-delta / Math.max(1e-9, this.temperature))) {
@@ -112,6 +113,7 @@ export class SimulatedAnnealingExperiment extends BaseExperiment {
       this.temperature *= this.num("cooling");
       this.temperature = Math.max(1e-4, this.temperature);
     }
+    this.length = this.tourLength();
     this.bestLength = Math.min(this.bestLength, this.length);
     this.history.push(this.length);
     if (this.history.length > 500) this.history.shift();

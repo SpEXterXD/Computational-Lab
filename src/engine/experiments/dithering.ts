@@ -87,7 +87,7 @@ export class DitheringExperiment extends BaseExperiment {
         const right = serpentine ? -1 : 1;
         if (x + right >= 0 && x + right < SIZE) work[idx + right] += (err * 7) / 16;
         if (y + 1 < SIZE) {
-          if (x - right >= 0) work[idx + SIZE - right] += (err * 3) / 16;
+          if (x - right >= 0 && x - right < SIZE) work[idx + SIZE - right] += (err * 3) / 16;
           work[idx + SIZE] += (err * 5) / 16;
           if (x + right >= 0 && x + right < SIZE) work[idx + SIZE + right] += err / 16;
         }
@@ -119,16 +119,16 @@ export class DitheringExperiment extends BaseExperiment {
       this.scratch.height = SIZE;
     }
     const data = this.image.data;
-    const cell = Math.floor(this.width / (SIZE * 2));
-    for (let i = 0; i < this.original.length; i++) {
-      const ov = Math.round(this.original[i] * 255);
-      const dv = Math.round(this.dithered[i] * 255);
-      data[i * 4] = ov;
-      data[i * 4 + 1] = ov;
-      data[i * 4 + 2] = ov;
-      data[i * 4 + 3] = 255;
-      void dv;
-      void cell;
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        const i = y * SIZE + x;
+        const v = x < SIZE / 2 ? Math.round(this.original[i] * 255) : Math.round(this.dithered[i] * 255);
+        const p = i * 4;
+        data[p] = v;
+        data[p + 1] = v;
+        data[p + 2] = v;
+        data[p + 3] = 255;
+      }
     }
     const offCtx = this.scratch!.getContext("2d")!;
     offCtx.putImageData(this.image, 0, 0);

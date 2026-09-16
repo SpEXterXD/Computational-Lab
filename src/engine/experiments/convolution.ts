@@ -108,14 +108,16 @@ export class ConvolutionExperiment extends BaseExperiment {
       this.scratch.height = SIZE;
     }
     const data = this.image.data;
-    for (let i = 0; i < this.original.length; i++) {
-      const ov = Math.round(this.original[i] * 255);
-      const fv = Math.round(this.filtered[i] * 255);
-      data[i * 4] = ov;
-      data[i * 4 + 1] = ov;
-      data[i * 4 + 2] = ov;
-      data[i * 4 + 3] = 255;
-      void fv;
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        const i = y * SIZE + x;
+        const v = x < SIZE / 2 ? Math.round(this.original[i] * 255) : Math.round(this.filtered[i] * 255);
+        const p = i * 4;
+        data[p] = v;
+        data[p + 1] = v;
+        data[p + 2] = v;
+        data[p + 3] = 255;
+      }
     }
     const offCtx = this.scratch!.getContext("2d")!;
     offCtx.putImageData(this.image, 0, 0);

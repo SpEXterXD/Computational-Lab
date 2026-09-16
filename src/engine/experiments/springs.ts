@@ -51,14 +51,13 @@ export class SpringChainExperiment extends BaseExperiment {
     let ke = 0;
     let pe = 0;
     for (let i = 0; i < this.count; i++) ke += 0.5 * m * this.v[i] * this.v[i];
-    let left = 0;
+    let prev = 0;
     for (let i = 0; i < this.count; i++) {
-      const stretch = this.x[i] - left - this.restLen;
+      const stretch = this.x[i] - prev;
       pe += 0.5 * k * stretch * stretch;
-      left = this.x[i];
+      prev = this.x[i];
     }
-    // Right wall sits at (count + 1) * restLen.
-    pe += 0.5 * k * (this.count * this.restLen - left) ** 2;
+    pe += 0.5 * k * (0 - prev) ** 2;
     return ke + pe;
   }
 
@@ -69,13 +68,12 @@ export class SpringChainExperiment extends BaseExperiment {
     const substeps = 24;
     const h = dt / substeps;
     for (let s = 0; s < substeps; s++) {
-      // Forces from both neighbors plus the walls.
+      // Coupled oscillators: forces from neighbors with fixed walls (u = 0).
       for (let i = 0; i < this.count; i++) {
-        const leftX = i === 0 ? 0 : this.x[i - 1];
-        const rightX = i === this.count - 1 ? (this.count + 1) * this.restLen : this.x[i + 1];
-        const fLeft = k * (this.x[i] - leftX - this.restLen);
-        const fRight = k * (rightX - this.x[i] - this.restLen);
-        this.v[i] += ((fRight - fLeft) / m - damping * this.v[i]) * h;
+        const leftU = i === 0 ? 0 : this.x[i - 1];
+        const rightU = i === this.count - 1 ? 0 : this.x[i + 1];
+        const fNet = k * (leftU - this.x[i]) + k * (rightU - this.x[i]);
+        this.v[i] += (fNet / m - damping * this.v[i]) * h;
       }
       for (let i = 0; i < this.count; i++) this.x[i] += this.v[i] * h;
     }

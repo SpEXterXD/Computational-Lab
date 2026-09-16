@@ -15,6 +15,7 @@ export class WaveSuperpositionExperiment extends BaseExperiment {
       { key: "a1", label: "Wave 1 amplitude", min: 0, max: 1, step: 0.05, defaultValue: 0.6 },
       { key: "f2", label: "Wave 2 frequency", min: 0.5, max: 8, step: 0.1, defaultValue: 2.4, unit: "Hz" },
       { key: "a2", label: "Wave 2 amplitude", min: 0, max: 1, step: 0.05, defaultValue: 0.5 },
+      { key: "phase2", label: "Wave 2 phase", min: 0, max: 6.28, step: 0.1, defaultValue: 0.8, unit: "rad" },
       { key: "speed", label: "Time speed", min: 0, max: 3, step: 0.1, defaultValue: 1 },
     ];
   }
@@ -30,7 +31,7 @@ export class WaveSuperpositionExperiment extends BaseExperiment {
   }
 
   private wave(frequency: number, amplitude: number, phase: number, x: number, t: number): number {
-    return amplitude * Math.sin(2 * Math.PI * (frequency * t - frequency * 0.22 * x));
+    return amplitude * Math.sin(2 * Math.PI * (frequency * t - frequency * 0.22 * x) + phase);
   }
 
   render(ctx: CanvasRenderingContext2D, theme: ThemeColors): void {
@@ -59,9 +60,10 @@ export class WaveSuperpositionExperiment extends BaseExperiment {
     const f2 = this.num("f2");
     const a1 = this.num("a1");
     const a2 = this.num("a2");
+    const phase2 = this.num("phase2");
     draw((x) => this.wave(f1, a1, 0, x, this.time), theme.viz[1], 1.2);
-    draw((x) => this.wave(f2, a2, 0.8, x, this.time), theme.viz[2], 1.2);
-    draw((x) => this.wave(f1, a1, 0, x, this.time) + this.wave(f2, a2, 0.8, x, this.time), theme.accent, 2.2);
+    draw((x) => this.wave(f2, a2, phase2, x, this.time), theme.viz[2], 1.2);
+    draw((x) => this.wave(f1, a1, 0, x, this.time) + this.wave(f2, a2, phase2, x, this.time), theme.accent, 2.2);
     ctx.font = "11px ui-monospace, monospace";
     ctx.fillStyle = theme.viz[1];
     ctx.fillText(`WAVE 1  ${f1.toFixed(1)} Hz`, 10, 14);

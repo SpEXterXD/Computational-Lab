@@ -53,7 +53,8 @@ export class EigenvectorsExperiment extends BaseExperiment {
       // (A - lambda I) v = 0: rows are [a-l, b] and [c, d-l].
       if (Math.abs(this.b) > 1e-9) return { vx: this.b, vy: lambda - this.a };
       if (Math.abs(this.c) > 1e-9) return { vx: lambda - this.d, vy: this.c };
-      return { vx: 1, vy: 0 };
+      if (Math.abs(this.a - lambda) <= Math.abs(this.d - lambda)) return { vx: 1, vy: 0 };
+      return { vx: 0, vy: 1 };
     };
     const pairs = [{ lambda: l1, ...vectorFor(l1) }];
     if (Math.abs(sqrt) > 1e-9) pairs.push({ lambda: l2, ...vectorFor(l2) });

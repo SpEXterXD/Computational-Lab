@@ -65,8 +65,9 @@ export class IntegratorComparisonExperiment extends BaseExperiment {
     const stepsPerTick = this.num("steps");
     for (let s = 0; s < stepsPerTick; s++) {
       // Forward Euler: unstable for oscillators (energy grows).
-      this.euler.omegaDot += this.accel(this.euler.theta) * dt;
+      const eulerA = this.accel(this.euler.theta);
       this.euler.theta += this.euler.omegaDot * dt;
+      this.euler.omegaDot += eulerA * dt;
       // Semi-implicit (symplectic) Euler: bounded, phase-shifted.
       this.semi.omegaDot += this.accel(this.semi.theta) * dt;
       this.semi.theta += this.semi.omegaDot * dt;

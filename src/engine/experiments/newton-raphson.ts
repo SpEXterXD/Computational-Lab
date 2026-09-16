@@ -1,7 +1,7 @@
 import { BaseExperiment } from "../core/base-experiment";
 import type { ParameterDef, PointerState, ThemeColors } from "../core/types";
 
-type Fn = { label: string; f: (x: number) => number; df: (x: number) => number; domain: [number, number] };
+type Fn = { label: string; f: (x: number) => number; df: (x: number) => number; domain: [number, number]; start: number };
 
 const FUNCTIONS: Record<string, Fn> = {
   "x^2 - 2": {
@@ -9,18 +9,21 @@ const FUNCTIONS: Record<string, Fn> = {
     f: (x) => x * x - 2,
     df: (x) => 2 * x,
     domain: [-3.4, 3.4],
+    start: 2.2,
   },
   "x^3 - x - 2": {
     label: "x³ - x - 2",
     f: (x) => x ** 3 - x - 2,
     df: (x) => 3 * x * x - 1,
     domain: [-2.6, 2.6],
+    start: 0.5,
   },
   "sin(x) - 0.4": {
     label: "sin(x) - 0.4",
     f: (x) => Math.sin(x) - 0.4,
     df: (x) => Math.cos(x),
     domain: [-8, 8],
+    start: 1.2,
   },
 };
 
@@ -57,7 +60,7 @@ export class NewtonRaphsonExperiment extends BaseExperiment {
 
   protected onReset(): void {
     this.fn = FUNCTIONS[this.str("fn")];
-    this.x = (this.fn.domain[0] + this.fn.domain[1]) / 2;
+    this.x = this.fn.start;
     this.iterations = 0;
     this.history = [];
     this.status = "running";
